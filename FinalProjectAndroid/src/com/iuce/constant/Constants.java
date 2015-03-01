@@ -13,7 +13,7 @@ public class Constants {
 	
 	//variables of socket 
 	public static int PORT_ADDRESS_SERVER = 999;
-	public static String IP_STRING = "localhost";
+	public static String IP_STRING = "";
 
 	public static InetAddress getIP_ADDRESS_SERVER() throws UnknownHostException {
 

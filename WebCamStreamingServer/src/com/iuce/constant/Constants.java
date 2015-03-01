@@ -9,4 +9,6 @@ public class Constants {
 	public static int CLIENT_PORT = -1;
 	public static int IMAGE_WIDTH = 300;
 	public static int IMAGE_HEIGHT = 300;
+	public static int AUTHORITY_ADMIN = 1;
+	public static int AUTHORITY_GUEST = 2;
 }

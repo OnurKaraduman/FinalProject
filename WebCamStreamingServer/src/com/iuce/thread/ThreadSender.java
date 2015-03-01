@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Encoder;
 import java.util.zip.Deflater;
@@ -12,12 +13,14 @@ import java.util.zip.Deflater;
 import javax.imageio.ImageIO;
 
 import com.iuce.constant.Constants;
+import com.iuce.model.Client;
 
 public class ThreadSender extends Thread {
 
 	private BufferedImage bufImageForSend;
 	private DatagramSocket socket;
 	private Deflater deflater;
+	private ArrayList<Client> clientList;
 
 	public ThreadSender(DatagramSocket socket) {
 		// TODO Auto-generated constructor stub
@@ -47,51 +50,34 @@ public class ThreadSender extends Thread {
 			}
 			byte[] byteImage = bos.toByteArray();
 
-			//byte[] byteImage = compress(byteImage2);
+			// byte[] byteImage = compress(byteImage2);
 			System.out.println("Total image byte length: " + byteImage.length);
-			if (byteImage.length <= 65500) {
-				DatagramPacket packet = new DatagramPacket(byteImage,
-						byteImage.length, Constants.IP_ADDRESS,
-						Constants.CLIENT_PORT);
-				try {
-					socket.send(packet);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-
-					// socket send exception -> loga kaydet
+			if (clientList != null) {
+				if (byteImage.length <= 65500) {
+					sendAllClient(byteImage);
 				}
 			}
+			
 
 		}
 
 	}
 
-	public byte[] compress(byte[] data) {
-		deflater.setInput(data);
-
-		ByteArrayOutputStream outputStream = new ByteArrayOutputStream(
-				data.length);
-
-		deflater.finish();
-		byte[] buffer = new byte[1024];
-		while (!deflater.finished()) {
-			int count = deflater.deflate(buffer); // returns the generated
-													// code... index
-			outputStream.write(buffer, 0, count);
-		}
-		try {
-			outputStream.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		byte[] output = outputStream.toByteArray();
-
-		System.out.println("Original: " + data.length / 1024 + " Kb");
-		System.out.println("Compressed: " + output.length / 1024 + " Kb");
-
-		return output;
-
+	public void setClientList(ArrayList<Client> clientList) {
+		this.clientList = clientList;
 	}
 
+	public void sendAllClient(byte[] sendByteImage) {
+		for (Client client : clientList) {
+			DatagramPacket packet = new DatagramPacket(sendByteImage,
+					sendByteImage.length, client.getClientIPAddress(),
+					client.getClientPort());
+			try {
+				socket.send(packet);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 }
