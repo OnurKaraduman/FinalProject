@@ -28,7 +28,8 @@ public class SettingsActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings);
 		initUIElement();
-		edttxtIPAddress.setText("172.28.8.43");
+//		edttxtIPAddress.setText("172.28.8.43");
+		edttxtIPAddress.setText("192.168.2.118");
 		edttxtPortAddress.setText("999");
 	}
 
