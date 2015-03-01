@@ -57,10 +57,7 @@ public class ThreadSender extends Thread {
 					sendAllClient(byteImage);
 				}
 			}
-			
-
 		}
-
 	}
 
 	public void setClientList(ArrayList<Client> clientList) {

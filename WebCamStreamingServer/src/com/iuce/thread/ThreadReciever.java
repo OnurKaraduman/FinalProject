@@ -46,10 +46,9 @@ public class ThreadReciever extends Thread {
 					client.setClientPort(packet.getPort());
 					if (clientList.size() == 0) {
 						client.setAuthority(Constants.AUTHORITY_ADMIN);
-					}
-					else
+					} else
 						client.setAuthority(Constants.AUTHORITY_GUEST);
-					
+
 					clientList.add(client);
 					clientID++;
 
@@ -76,7 +75,6 @@ public class ThreadReciever extends Thread {
 				}
 			}
 		}
-
 		return false;
 	}
 }

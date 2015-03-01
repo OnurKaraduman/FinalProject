@@ -34,8 +34,9 @@ public class main {
 	public static DatagramSocket socket;
 	private static ThreadSender threadSender;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 		// TODO Auto-generated method stub
+		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
 		try {
 			socket = new DatagramSocket(Constants.PORT_ADDRESS);
 		} catch (SocketException e) {
@@ -43,55 +44,38 @@ public class main {
 			e.printStackTrace();
 		}
 		threadSender = new ThreadSender(socket);
-		threadSender.start();
+
 		initFrame();
-		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+
 		VideoCapture camFeed = new VideoCapture(1);
 
 		Mat matCamFeed = new Mat();
 		Mat matSender = new Mat();
-		byte[] clientInformation = new byte[10];
-		// DatagramPacket packetClientInf = null;
-		// try {
-		// System.out.println("Client Bekleniyor....");
-		// packetClientInf = new DatagramPacket(clientInformation,
-		// clientInformation.length);
-		// socket.receive(packetClientInf);
-		// System.out.println("Client baglandi.");
-		// } catch (IOException e1) {
-		// // TODO Auto-generated catch block
-		// e1.printStackTrace();
-		// }
-		// Constants.IP_ADDRESS = packetClientInf.getAddress();
-		// Constants.CLIENT_PORT = packetClientInf.getPort();
-		// System.out.println("client ip:" + packetClientInf.getAddress());
-		// System.out.println("client port: " + packetClientInf.getPort());
-		// String s = new String(packetClientInf.getData());
-		// System.out.println("gelen data: " + s);
 
 		ThreadReciever threadReciever = new ThreadReciever(socket);
 
+		// client gelene kadar bekle
+		while (threadReciever.getClientList().size() == 0) {
+			Thread.sleep(100);
+		}
 		while (true) {
 
-			if (threadReciever.getClientList().size() > 0) {
-				camFeed.read(matCamFeed);
-				Imgproc.resize(matCamFeed, matSender, new Size(
-						Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT));
-				BufferedImage bufImage = null;
-				try {
-					bufImage = matToBufferedImage(matSender);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				threadSender.setBufImageForSend(bufImage);
-				threadSender.setClientList(threadReciever.getClientList());
-				threadSender.run();
-				panelImage.setImage(bufImage);
-				panelImage.repaint();
+			camFeed.read(matCamFeed);
+			Imgproc.resize(matCamFeed, matSender, new Size(
+					Constants.IMAGE_WIDTH, Constants.IMAGE_HEIGHT));
+			BufferedImage bufImage = null;
+			try {
+				bufImage = matToBufferedImage(matSender);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			threadSender.setBufImageForSend(bufImage);
+			threadSender.setClientList(threadReciever.getClientList());
+			threadSender.run();
+			panelImage.setImage(bufImage);
+			panelImage.repaint();
 		}
-
 	}
 
 	public static void initFrame() {
@@ -99,25 +83,17 @@ public class main {
 		jframeImage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeImage.setSize(400, 400);
 		jframeImage.setVisible(true);
-
 		JButton btnGonder = new JButton("gonder");
 		btnGonder.setVisible(true);
-		// jframeImage.add(btnGonder);
-
 		panelImage = new FacePanel();
 		jframeImage.setContentPane(panelImage);
-
 	}
 
 	public static BufferedImage matToBufferedImage(Mat mat) throws IOException {
 		MatOfByte bytemat = new MatOfByte();
-
 		Highgui.imencode(".jpg", mat, bytemat);
-
 		byte[] bytes = bytemat.toArray();
-
 		InputStream in = new ByteArrayInputStream(bytes);
-
 		BufferedImage img = ImageIO.read(in);
 		return img;
 	}
