@@ -43,48 +43,53 @@ public class CommandActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_command);
 		initUI();
-		//create datagramSocket
-				try {
-					socket = new DatagramSocket();
-				} catch (SocketException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				senderUdp = new SenderUDP(socket);
-				startGetStream();
+		// create datagramSocket
+		try {
+			socket = new DatagramSocket();
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		getStreaming();
+		
+		// socket = null;
+
+		// senderUdp = new SenderUDP(socket);
+
 	}
 
-	public void startGetStream(){
+	public void getStreaming(){
 		Thread t = new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				// TODO Auto-generated method stub
 
 				byte[] sendData = new byte[1024];
 				byte[] receiveData = new byte[65500];
-				DatagramSocket clientSocket = null;
-				try {
-					clientSocket = new DatagramSocket();
-				} catch (SocketException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				DatagramSocket clientSocket = null;
+//				try {
+//					clientSocket = new DatagramSocket();
+//				} catch (SocketException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 
-//				String sentence = messageEdit.getText().toString();
 				String sentence = "start";
 				sendData = sentence.getBytes();
 				DatagramPacket sendPacket = null;
 				try {
-					sendPacket = new DatagramPacket(
-							sendData, sendData.length, Constants.getIP_ADDRESS_SERVER(), Constants.PORT_ADDRESS_SERVER);
+					sendPacket = new DatagramPacket(sendData,
+							sendData.length, Constants
+									.getIP_ADDRESS_SERVER(),
+							Constants.PORT_ADDRESS_SERVER);
 				} catch (UnknownHostException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				try {
-					clientSocket.send(sendPacket);
+					socket.send(sendPacket);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -96,9 +101,9 @@ public class CommandActivity extends ActionBarActivity {
 							receiveData, receiveData.length);
 
 					try {
-						clientSocket.receive(receivePacket);
-//						System.out.println("gelen veri boyutu: "
-//								+ receivePacket.getData());
+						socket.receive(receivePacket);
+						System.out.println("gelen veri boyutu: "
+								+ receivePacket.getData());
 						ByteArrayInputStream byt = new ByteArrayInputStream(
 								receivePacket.getData());
 
@@ -127,10 +132,13 @@ public class CommandActivity extends ActionBarActivity {
 						e.printStackTrace();
 					}
 				}
+
 			}
 		});
 		t.start();
+		
 	}
+	
 	
 	public void initUI() {
 		imageView = (ImageView) findViewById(R.id.imageView1);
@@ -158,19 +166,25 @@ public class CommandActivity extends ActionBarActivity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				senderUdp.send(Constants.COMMAND_GO);
+
+				
+
 			}
 		});
-	}
-	public  void repaintImageView(final Bitmap bm){
-		runOnUiThread(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				imageView.setImageBitmap(bm);
-			}
-		});
-		
+
 	}
 }
+
+// public void repaintImageView(final Bitmap bm) {
+// runOnUiThread(new Runnable() {
+//
+// @Override
+// public void run() {
+// // TODO Auto-generated method stub
+// imageView.setImageBitmap(bm);
+// }
+// });
+//
+//
+// }
+

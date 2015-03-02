@@ -8,6 +8,9 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -26,7 +29,8 @@
             android:name="com.iuce.finalprojectandroid.CommandActivity"
             android:label="@string/title_activity_command" >
         </activity>
-        <activity android:name="com.iuce.finalprojectandroid.SettingsActivity"
+        <activity
+            android:name="com.iuce.finalprojectandroid.SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
     </application>
