@@ -57,9 +57,7 @@ public class SettingsActivity extends ActionBarActivity {
 					Constants.PORT_ADDRESS_SERVER = portAddress;
 					Intent intent = new Intent(SettingsActivity.this, CommandActivity.class);
 					startActivity(intent);
-
 				}
-
 			}
 		});
 	}
