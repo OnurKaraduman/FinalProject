@@ -83,8 +83,8 @@ public class main {
 		jframeImage.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		jframeImage.setSize(400, 400);
 		jframeImage.setVisible(true);
-		JButton btnGonder = new JButton("gonder");
-		btnGonder.setVisible(true);
+		//JButton btnGonder = new JButton("gonder");
+		//btnGonder.setVisible(true);
 		panelImage = new FacePanel();
 		jframeImage.setContentPane(panelImage);
 	}
