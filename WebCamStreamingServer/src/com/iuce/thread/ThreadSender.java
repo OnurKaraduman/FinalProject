@@ -51,7 +51,7 @@ public class ThreadSender extends Thread {
 			byte[] byteImage = bos.toByteArray();
 
 			// byte[] byteImage = compress(byteImage2);
-			System.out.println("Total image byte length: " + byteImage.length);
+//			System.out.println("Total image byte length: " + byteImage.length);
 			if (clientList != null) {
 				if (byteImage.length <= 65500) {
 					sendAllClient(byteImage);

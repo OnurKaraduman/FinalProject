@@ -1,5 +1,7 @@
 package com.iuce.thread;
 
+
+
 import java.awt.List;
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -10,8 +12,17 @@ import java.util.ArrayList;
 import com.iuce.constant.Constants;
 import com.iuce.model.Client;
 
+/*! 
+ *  \brief     ThreadReciever
+ *  \details   This class for accept client and recieving data
+ *  \author    Onur Karaduman
+ *  \date      01.03.2015
+ */
+
 public class ThreadReciever extends Thread {
 
+	
+	/*Socket defined*/
 	private DatagramSocket socket;
 
 	private ArrayList<Client> clientList;
@@ -22,7 +33,6 @@ public class ThreadReciever extends Thread {
 		this.socket = socket;
 		clientList = new ArrayList<Client>();
 		this.start();
-
 	}
 
 	@Override
@@ -37,7 +47,7 @@ public class ThreadReciever extends Thread {
 			try {
 				socket.receive(packet);
 				System.out.println("client baglandi.");
-				// client vertitabanýmýza kayýtlý mý sorgusu gibi dusunebiliriz
+				/* client vertitabanýmýza kayýtlý mý sorgusu gibi dusunebiliriz*/
 				// eger degilse yeni bir client olustururuz
 				if (!controlClient(packet.getAddress())) {
 					Client client = new Client();
@@ -63,6 +73,7 @@ public class ThreadReciever extends Thread {
 		}
 	}
 
+	/*! \brief This method gets all client */
 	public ArrayList<Client> getClientList() {
 		return clientList;
 	}

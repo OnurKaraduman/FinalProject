@@ -11,4 +11,11 @@ public class Constants {
 	public static int IMAGE_HEIGHT = 300;
 	public static int AUTHORITY_ADMIN = 1;
 	public static int AUTHORITY_GUEST = 2;
+
+	// variables of command
+	public static String COMMAND_RIGHT = "";
+	public static String COMMAND_LEFT = "";
+	public static String COMMAND_GO = "";
+	public static String COMMAND_START_VIDEO_STREAM = "";
+	public static String COMMAND_STOP_CONNECTION = "";
 }
